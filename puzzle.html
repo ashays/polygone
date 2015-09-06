@@ -1,55 +1,42 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<meta name="viewport" content="width=device-width" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="css/style.css"/>
-<script> var currentScreen = "puzzle"; </script>
-<script src="jquery-1.11.0.min.js"></script>
-<script src="jquery.touchSwipe.min.js"></script>
-<script src="patterns.js"></script>
-<script src="levels.js"></script>
-<script src="tutorial.js"></script>
-<script src="script.js"></script>
-<title>Boxes Puzzle</title>
+  <meta name="viewport" content="width=device-width" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="css/style.css"/>
+  <script src="jquery-1.11.0.min.js"></script>
+  <script src="jquery.touchSwipe.min.js"></script>
+  <script src="patterns.js"></script>
+  <script src="script.js"></script>
+  <title>Polygone</title>
 </head>
 <body>
-<div class="timer" id="timer"></div>
-<div class="header">
-	<a href="index.html" id="menu"><img src="img/menu.png" /></a>
-   	<h1>Polygone.</h1>
-</div>
-<div class="tutorial" id="tutorial"><p id="tutorialContent"></p><div class="button" id="backTut">&lt;</div><div class="button" id="closeTut">X</div><div class="button" id="nextTut">&gt;</div>
-</div>
-<div class="puzzle" id="puzzle">
-	<ul id="blocks"></ul>
-</div>
-<div class="credits" id="credits">
-	<h2>Woah! You just beat Polygone! Congratulations!</h2>
-    <p>Unfortunately, that also means there are no more levels... but don’t worry! We're always creating new and more exciting levels, so stay tuned for our next update.</p>
-    <p>Want to speed up the process? Positive reviews are a powerful motivator :) If you enjoyed playing Polygone, please let us know with a rating and review in the Play Store.</p>
-    <p>Can't live without Polygone? You can use the level selector on the home screen to retry levels for more stars.</p>
-</div>
-<div class="bottomBar" id="levelStats">
-	<div class="info" id="info">
-        <div class="levelInfo">
-        	<span id="level"></span>
-        	<span id="stars"></span>        
-        </div>
-    	<div class="counter"><h3>Erases</h3><span id="counter"></span></div>
-        <span id="alert"></span>
+  <div class="timer" id="timer"></div>
+  <div class="header">
+    <a href="index.html" id="menu"><img src="img/menu.png" /></a>
+    <h1>Polygone.</h1>
+  </div>
+  <div class="puzzle" id="puzzle">
+    <ul id="blocks"></ul>
+  </div>
+  <div class="bottomBar" id="levelStats">
+    <div class="info" id="info">
+      <div class="levelTime">
+       <span id="clock"></span>
+      </div>
+      <div class="counter"><h3>Erases</h3><span id="counter"></span></div>
+      <span id="alert"></span>
     </div>
-	<div id="results">
+    <div id="results">
       <div class="stars" id="newStars">
-          <img src="img/star.png" />
+        <img src="img/star.png" />
       </div>
-      <h2>Congratulations!</h2>
+      <h2>Success!</h2>
       <div class="score">
-          <h3>Score</h3>
-          <span id="score">100</span>
+        <h3>Time</h3>
+        <span id="score">100</span>
       </div>
-      <div class="button" id="next">Next Level</div>
+      <div class="button" id="next">Play Again</div>
     </div>
-</div>
+  </div>
 </body>
 </html>

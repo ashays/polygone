@@ -1,16 +1,11 @@
 $(function(){
 	
-	if (!localStorage.currentLevel)
-    	localStorage.currentLevel = 0;
-	if (!localStorage.stars){
-    	localStorage.stars= new String;
+	if (!localStorage.puzzlesCompleted)
+    	localStorage.puzzlesCompleted = 0;
+	if (!localStorage.averageTime){
+    	localStorage.averageTime = 60;
 	}
 
-	if(localStorage.stars!=null)
-		var score = Number(localStorage.score);
-	var stars = localStorage.stars.split(" ");
-	//var level;
-	//var solution;
 	var answer;
 	var status;
 	var clicks;
@@ -36,11 +31,7 @@ $(function(){
 
 	var levelStatsMainHeight = "86px";
 		
-	if(currentScreen=="puzzle") {
-		initializeLevel();
-	} else if(currentScreen=="levelSelector") {
-		levelSelector();
-	}
+	initializeLevel();
 	
 	function initializeLevel(){
 		$("#stars").empty();
@@ -53,11 +44,8 @@ $(function(){
 		$("#newStars").empty();
 		do {
 			newLevel();
-		// } while (level.every(function(ele) { return (ele.indexOf("undefined") > -1) || ele === "0" }));
 		} while (level.toString().indexOf("undefined") > -1);
 		console.log(level);
-		//level = levels[localStorage.currentLevel];
-		//solution = solutions[localStorage.currentLevel];
 		answer = $.extend( {}, level );
 		incorrect();
 		createStage(level);
@@ -69,21 +57,14 @@ $(function(){
 				maxEliminate++;
 		}
 		$("#counter").text(maxEliminate - eraser);
-		$("#level").text("Level #" + (Number(localStorage.currentLevel) + 1));
-		if(stars[localStorage.currentLevel]!=null){
-			for(i = 0; i < stars[localStorage.currentLevel]; i++)
-				$( "#stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-		}
-		var timer = new Date();
-		start = timer.getTime();
+		start = new Date().getTime();
 		var timer = $(".timer"),
 		newTimer = timer.clone(true);
         timer.before(newTimer);
         $("." + timer.attr("class") + ":last").remove();
-		currentStep = 0; //Reset the tutorial
-		tutorialSteps(); //Execute the tutorial (if exists on this level)
+        $('.timer').css('animation-duration', localStorage.averageTime + "s");
 	}
-		
+
 	function createStage(whatBoxes) {
 		$("#blocks").empty();
 		for(i=0;i<whatBoxes.length;i++){
@@ -184,47 +165,44 @@ $(function(){
 		var timer = new Date();
 		end = timer.getTime();
 		time = (end - start) / 1000;
-		score = 500 - (5 * time) - (5 * (clicks-maxEliminate));
-		if(time > 30)
-			score -= 10;
-		if(clicks>maxEliminate)
-			score -= 10;
-		if(score >= 360){
-			if(stars[localStorage.currentLevel]<3 || stars[localStorage.currentLevel]==null)
-				stars[localStorage.currentLevel] = 3;
-			$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-			$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-			$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-		}
-		else if(score >= 200){
-			if(stars[localStorage.currentLevel]<2 || stars[localStorage.currentLevel]==null)
-				stars[localStorage.currentLevel] = 2;
-			$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-			$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-		}
-		else{
-			if(stars[localStorage.currentLevel]<1 || stars[localStorage.currentLevel]==null)
-				stars[localStorage.currentLevel] = 1;
-			$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-			if(score < 50)
-				score = 50;
-		}
-		$("#score").text(Math.round(score));
+		// score = 500 - (5 * time) - (5 * (clicks-maxEliminate));
+		// if(time > 30)
+		// 	score -= 10;
+		// if(clicks>maxEliminate)
+		// 	score -= 10;
+		// if(score >= 360){
+		// 	if(stars[localStorage.currentLevel]<3 || stars[localStorage.currentLevel]==null)
+		// 		stars[localStorage.currentLevel] = 3;
+		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
+		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
+		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
+		// }
+		// else if(score >= 200){
+		// 	if(stars[localStorage.currentLevel]<2 || stars[localStorage.currentLevel]==null)
+		// 		stars[localStorage.currentLevel] = 2;
+		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
+		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
+		// }
+		// else{
+		// 	if(stars[localStorage.currentLevel]<1 || stars[localStorage.currentLevel]==null)
+		// 		stars[localStorage.currentLevel] = 1;
+		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
+		// 	if(score < 50)
+		// 		score = 50;
+		// }
+		$("#score").text(Math.round(time));
 		$("#info").css("display","none");		
 		$("#results").css("display","block");
-		$("#levelStats").css("height","180px");
-		localStorage.currentLevel++;
-		localStorage.stars = stars.join(" ");
+		$("#levelStats").css("height","160px");
+		var averageTime = parseInt(localStorage.averageTime);
+		var puzzlesCompleted = parseInt(localStorage.puzzlesCompleted);
+		localStorage.averageTime = (puzzlesCompleted * averageTime + time) / (puzzlesCompleted + 1);
+		localStorage.puzzlesCompleted++;
 	}
 
 	$("#next").swipe( {
 		tap:function(event, target) {
-			if(levels[localStorage.currentLevel]==null){
-				credits();
-			}
-			else{
-				initializeLevel();
-			}
+			initializeLevel();
 		},
 		threshold:50
 	});	
@@ -246,22 +224,12 @@ $(function(){
 		}
 	}
 	
-	function credits(){
-		$("#timer").css("display","none");
-		$("#puzzle").css("display","none");
-		$("#results").css("display","none");
-		$("#info").css("display","none");
-		$("#levelStats").css("height","0px");
-		$("#credits").css("display","block");
-		localStorage.currentLevel=0;
-	}
-	
 	function newLevel() {
 		reset();
 		addEraseBlocks(10);
 		var numberOfPatterns = 0;
 		var rand = Math.random();
-		for (f = 0; f < 15 || numberOfPatterns < 3; f++, rand = Math.random()){
+		for (f = 0; f < 15 || numberOfPatterns < 4; f++, rand = Math.random()){
 			if (rand < .5) {
 				if (addPattern(colors, colorCanBe, colorCanBeCountRow, levelColors, solutionColors)) {
 					numberOfPatterns++;
@@ -272,10 +240,8 @@ $(function(){
 				}
 			}
 		}
-		// console.log(levelColors);
-		// console.log(levelColors.every(function(element) { return element === undefined || element === "0" }));
-		// console.log(levelShapes);
-		// console.log(levelShapes.every(function(element) { return element === undefined || element === "0" }));
+		console.log(levelColors);
+		console.log(levelShapes);
 		fillBoxes(colors, colorCanBe, colorCanBeCountRow, colorCanBeCountColumn, levelColors, solutionColors);
 		fillBoxes(shapes, shapeCanBe, shapeCanBeCountRow, shapeCanBeCountColumn, levelShapes, solutionShapes);
 		createLevel();
@@ -328,7 +294,7 @@ $(function(){
 		//valueA should be whatever can be in the row most
 		var valueA = att[Math.floor(Math.random() * att.length)];
 		//for (i = 0; i < attCanBeCountRow[randRow].length; i++) {
-		//	if (attCanBeCountRow[randRow][i])
+		//	if (attCanBeCountRow[randRow][i])	
 		//}
 		var valueB = att[Math.floor(Math.random() * att.length)];
 		while (valueA == valueB){
