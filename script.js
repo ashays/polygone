@@ -177,10 +177,13 @@ $(function(){
 	function correct(){
 		status = "correct";
 		clearTimeout(timer);
-		$("#score").text(time);
+		$("#taps").text(clicks - maxEliminate);
+		$("#time").text(time);
+		$("#completedLevels").text(localStorage.puzzlesCompleted);
+		$("#averageTime").text(Math.floor(localStorage.averageTime));
 		$("#levelInfo").css("display","none");		
 		$("#results").css("display","block");
-		$("#levelStats").css("height","160px");
+		$("#levelStats").css("height","260px");
 		var averageTime = parseInt(localStorage.averageTime);
 		var puzzlesCompleted = parseInt(localStorage.puzzlesCompleted);
 		localStorage.averageTime = (puzzlesCompleted * averageTime + time) / (puzzlesCompleted + 1);

@@ -181,17 +181,6 @@ body {
 	margin: 5px 0;
 }
 
-.bottomBar .score h3{
-	text-transform:uppercase;
-	margin:0;
-}
-
-.bottomBar .score span{
-	font-weight: 700;
-	font-size: 50px;
-	line-height: 40px;
-}
-
 .bottomBar .section {
     width: 100%;
     max-width: 300px;
@@ -213,6 +202,31 @@ body {
     font-size: 40px;
 }
 
+.bottomBar .results table {
+    width: 100%;
+    color: #fff;
+    font-size: 20px;
+    border-spacing: 0;
+}
+
+.bottomBar .results table img {
+    height: 20px;
+    padding: 0;
+    margin-left: 10px;
+}
+
+.bottomBar .results table td {
+    padding: 5px 0;
+}
+
+.bottomBar .results table tr:nth-child(even) {
+    background-color: rgba(0,0,0,.1);
+}
+
+.bottomBar .results table tr:nth-child(odd) {
+    background-color: rgba(0,0,0,.2);
+}
+
 .bottomBar .info .counter #erases {
     font-weight: bold;
     margin-right: -10px;
@@ -226,7 +240,7 @@ body {
     font-weight: bold;
 }
 
-.bottomBar .info .levelTime #clock:after {
+.bottomBar .info .levelTime #clock:after, .bottomBar .results #time:after, .bottomBar .results #averageTime:after {
     content: 's';
     font-weight: normal;
 }
@@ -237,8 +251,9 @@ body {
 	color: #CC3333;
 	text-transform: lowercase;
 	padding: 10px;
-	margin: 5px;
+	margin: 10px;
 	text-align: center;	
+	cursor: pointer;
 }
 
 .home .button{
