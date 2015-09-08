@@ -156,45 +156,6 @@ body {
 	line-height: 40px;
 }
 
-.info{
-	text-align: center;
-	width: 300px;
-	margin: 0 auto;
-}
-
-.info div{
-	display: inline-block;
-	width: 100px;
-	margin: 5px;
-	vertical-align: middle;
-}
-
-.info span{
-	display:block;
-	margin:5px 0;
-}
-
-.counter{
-	background: #fff;
-	color: #CC3333;
-}
-
-.counter h3{
-	text-transform: uppercase;
-	margin: 5px 0;
-}
-
-.counter #counter{
-	font-weight: 700;
-	font-size: 50px;
-	line-height: 40px;
-}
-
-.bottomBar .levelTime{
-	padding:7px 0;
-	font-size:25px;
-}
-
 .bottomBar{
 	position: fixed;
 	bottom: 0px;
@@ -217,7 +178,7 @@ body {
 
 .bottomBar h2{
 	font-weight:300;
-	margin: 10px 0;
+	margin: 5px 0;
 }
 
 .bottomBar .score h3{
@@ -231,19 +192,43 @@ body {
 	line-height: 40px;
 }
 
-.bottomBar .stars img{
-	width: 20px;
-	margin: 10px 5px 0;
+.bottomBar .section {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 5px 0;
 }
 
-#stars img{
-	width:20px;
-	margin: 0 5px;
+.bottomBar .info .counter, .bottomBar .info .levelTime {
+    width: 48%;
+    display: inline-block;
 }
 
-#levels .button img {
-	width: 15px;
-	margin: 5px;
+.bottomBar img {
+    height: 35px;
+    padding-top: 10px;
+}
+
+.bottomBar .info {
+    font-size: 40px;
+}
+
+.bottomBar .info .counter #erases {
+    font-weight: bold;
+    margin-right: -10px;
+}
+
+.bottomBar .info .counter #maxErases:before {
+    content: '/';
+}
+
+.bottomBar .info .levelTime #clock {
+    font-weight: bold;
+}
+
+.bottomBar .info .levelTime #clock:after {
+    content: 's';
+    font-weight: normal;
 }
 
 .button{

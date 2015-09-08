@@ -19,17 +19,20 @@
     <ul id="blocks"></ul>
   </div>
   <div class="bottomBar" id="levelStats">
-    <div class="info" id="info">
+    <div class="alert section" id="alerts"></div>
+    <div class="info section" id="levelInfo">
+      <div class="counter">
+        <img src="img/trash.png">
+        <span id="erases"></span>
+        <span id="maxErases"></span>
+      </div>
       <div class="levelTime">
-       <span id="clock"></span>
+        <img src="img/clock.png">
+        <span id="clock">12</span>
       </div>
-      <div class="counter"><h3>Erases</h3><span id="counter"></span></div>
-      <span id="alert"></span>
     </div>
-    <div id="results">
-      <div class="stars" id="newStars">
-        <img src="img/star.png" />
-      </div>
+    <div class="results section">
+      <img src="img/thumbs-up.png">
       <h2>Success!</h2>
       <div class="score">
         <h3>Time</h3>

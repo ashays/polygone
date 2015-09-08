@@ -11,8 +11,8 @@ $(function(){
 	var clicks;
 	var maxEliminate;
 	var eraser;
-	var start;
-	var end;
+	var time;
+	var timer;
 	
 	var levelColors = [];
 	var levelShapes = [];
@@ -29,7 +29,7 @@ $(function(){
 	var shapeCanBeCountRow = [];
 	var shapeCanBeCountColumn = [];
 
-	var levelStatsMainHeight = "86px";
+	var levelStatsMainHeight = "56px";
 		
 	initializeLevel();
 	
@@ -38,9 +38,10 @@ $(function(){
 		$("#timer").css("display","block");
 		$("#puzzle").css("display","block");
 		$("#credits").css("display","none");
+		$("#alerts").css("display","none");
+		$("#levelInfo").css("display","block");
 		$("#results").css("display","none");
-		$("#info").css("display","block");
-		$("#levelStats").css("height",levelStatsMainHeight);
+		$("#levelStats").css("height", levelStatsMainHeight);
 		$("#newStars").empty();
 		do {
 			newLevel();
@@ -56,13 +57,16 @@ $(function(){
 			if(solution[i]=="0" && level[i]!="0")
 				maxEliminate++;
 		}
-		$("#counter").text(maxEliminate - eraser);
-		start = new Date().getTime();
+		$("#erases").text('0');
+		$("#maxErases").text(maxEliminate);
+		time = 0;
+		$("#clock").text(time);
 		var timer = $(".timer"),
 		newTimer = timer.clone(true);
         timer.before(newTimer);
         $("." + timer.attr("class") + ":last").remove();
         $('.timer').css('animation-duration', localStorage.averageTime + "s");
+        incTimer();
 	}
 
 	function createStage(whatBoxes) {
@@ -73,7 +77,17 @@ $(function(){
 			else
 				$( "#blocks" ).append( "<li class=\"er\" data-number=\"" + i + "\" style=\"animation-delay:" + (.1 * i) + "s; -webkit-animation-delay:" + (.1 * i) + "s;\"></li>" );
 		}
-	}	
+	}
+
+	function addTime() {
+		time++;
+		$("#clock").text(time);
+		incTimer();
+	}
+
+	function incTimer() {
+		timer = setTimeout(addTime, 1000);
+	}
 	
 	function getEventTarget(e) {
         e = e || window.event;
@@ -113,7 +127,7 @@ $(function(){
 						correct();
 					}
 				}
-				$("#counter").text(maxEliminate - eraser);				
+				$("#erases").text(eraser);				
 			}
 		},
 		threshold:50
@@ -162,36 +176,9 @@ $(function(){
 	
 	function correct(){
 		status = "correct";
-		var timer = new Date();
-		end = timer.getTime();
-		time = (end - start) / 1000;
-		// score = 500 - (5 * time) - (5 * (clicks-maxEliminate));
-		// if(time > 30)
-		// 	score -= 10;
-		// if(clicks>maxEliminate)
-		// 	score -= 10;
-		// if(score >= 360){
-		// 	if(stars[localStorage.currentLevel]<3 || stars[localStorage.currentLevel]==null)
-		// 		stars[localStorage.currentLevel] = 3;
-		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-		// }
-		// else if(score >= 200){
-		// 	if(stars[localStorage.currentLevel]<2 || stars[localStorage.currentLevel]==null)
-		// 		stars[localStorage.currentLevel] = 2;
-		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-		// }
-		// else{
-		// 	if(stars[localStorage.currentLevel]<1 || stars[localStorage.currentLevel]==null)
-		// 		stars[localStorage.currentLevel] = 1;
-		// 	$( ".stars" ).append( "<img src=\"img/scoreStar.png\" />" );
-		// 	if(score < 50)
-		// 		score = 50;
-		// }
-		$("#score").text(Math.round(time));
-		$("#info").css("display","none");		
+		clearTimeout(timer);
+		$("#score").text(time);
+		$("#levelInfo").css("display","none");		
 		$("#results").css("display","block");
 		$("#levelStats").css("height","160px");
 		var averageTime = parseInt(localStorage.averageTime);
