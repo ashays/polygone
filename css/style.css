@@ -247,20 +247,24 @@ body {
 
 .button{
 	display: inline-block;
-	background: #fff;
-	color: #CC3333;
+	background: rgba(0,0,0,.2);
+	color: #fff;
 	text-transform: lowercase;
 	padding: 10px;
 	margin: 10px;
 	text-align: center;	
 	cursor: pointer;
+	border-radius: 5px;
+}
+
+.button:nth-of-type(2n) {
+    background: rgba(0,0,0,.3);
 }
 
 .home .button{
 	height: 60px;
 	width: 60px;
 	line-height: 60px;
-	color: #fff;
 	padding:0;
 	margin: 10px 5px;
 }
@@ -277,30 +281,6 @@ body {
 	color: #000;
 	text-align: left;
 	padding: 0 20px;
-}
-
-#levels {
-	width: 300px;
-	margin: 0 auto;	
-}
-
-#levels .button{
-	background: #CC3333;
-	color:#FFF;
-	line-height: normal;
-	width: 85px;
-	height: 50px;
-	vertical-align: top;
-	padding: 5px;
-	font-weight: 700;
-	opacity: 0;
-	filter: Alpha(opacity=0);
-	animation: fadeIn .5s forwards;
-	-webkit-animation: fadeIn .5s forwards;
-}
-
-#levels .button.locked{
-	background:#888;
 }
 
 .credits {
@@ -335,6 +315,12 @@ body {
 
 .puzzle li.f{
 	background: #5E4FA2;
+}
+
+.puzzle li.u {
+    height: 50px;
+    width: 50px;
+    margin: 5px;
 }
 
 .puzzle li.v{

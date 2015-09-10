@@ -44,6 +44,7 @@ $(function(){
 		$("#levelStats").css("height", levelStatsMainHeight);
 		$("#newStars").empty();
 		do {
+			console.log("CREATING LEVEL");
 			newLevel();
 		} while (level.toString().indexOf("undefined") > -1);
 		console.log(level);
@@ -177,17 +178,22 @@ $(function(){
 	function correct(){
 		status = "correct";
 		clearTimeout(timer);
+		var averageTime = parseFloat(localStorage.averageTime);
+		var puzzlesCompleted = parseInt(localStorage.puzzlesCompleted);
+		localStorage.averageTime = (puzzlesCompleted * averageTime + time) / (puzzlesCompleted + 1);
+		localStorage.puzzlesCompleted++;
 		$("#taps").text(clicks - maxEliminate);
 		$("#time").text(time);
 		$("#completedLevels").text(localStorage.puzzlesCompleted);
 		$("#averageTime").text(Math.floor(localStorage.averageTime));
-		$("#levelInfo").css("display","none");		
+		if (localStorage.averageTime > averageTime) {
+			$("#averageImg").attr("src","img/arrow-up.png");
+		} else {
+			$("#averageImg").attr("src","img/arrow-down.png");
+		}
+		$("#levelInfo").css("display","none");
 		$("#results").css("display","block");
 		$("#levelStats").css("height","260px");
-		var averageTime = parseInt(localStorage.averageTime);
-		var puzzlesCompleted = parseInt(localStorage.puzzlesCompleted);
-		localStorage.averageTime = (puzzlesCompleted * averageTime + time) / (puzzlesCompleted + 1);
-		localStorage.puzzlesCompleted++;
 	}
 
 	$("#next").swipe( {
@@ -196,27 +202,12 @@ $(function(){
 		},
 		threshold:50
 	});	
-		
-	function levelSelector(){
-		$("#levels").empty();
-		for(i = 0; i<stars.length; i++){
-			var starsImg = "<br />";
-			for(j = 0; j < stars[i]; j++)
-				starsImg += "<img src=\"img/scoreStar.png\" />";
-			$( "#levels" ).append( "<a href=\"puzzle.html\"><div class=\"button\" style=\"animation-delay:" + (.05 * i) + "s; -webkit-animation-delay:" + (.05 * i) + "s;\" onclick=\"localStorage.currentLevel=" + i + ";\">" + (i+1) + starsImg + "</div></a>");
-		}
-		if(stars.length<levels.length && stars[0] != "")
-			$("#levels").append( "<a href=\"puzzle.html\"><div class=\"button\" style=\"animation-delay:" + (.05 * stars.length) + "s; -webkit-animation-delay:" + (.05 * stars.length) + "s;\" onclick=\"localStorage.currentLevel=" + stars.length + ";\">" + (stars.length + 1) + "</div></a>");
-		else if(stars[0] == "")
-				$("#levels").append( "<div class=\"button locked\" style=\"animation-delay:" + (.05 * stars.length) + "s; -webkit-animation-delay:" + (.05 * stars.length) + "s;\">" + (stars.length + 1) + "</div>");			
-		for(k = stars.length+1; k<levels.length; k++){
-			$( "#levels" ).append( "<div class=\"button locked\" style=\"animation-delay:" + (.05 * k) + "s; -webkit-animation-delay:" + (.05 * k) + "s;\">" + (k+1) + "</div>");			
-		}
-	}
-	
+
 	function newLevel() {
 		reset();
 		addEraseBlocks(10);
+		console.log(levelColors);
+		console.log(levelShapes);
 		var numberOfPatterns = 0;
 		var rand = Math.random();
 		for (f = 0; f < 15 || numberOfPatterns < 4; f++, rand = Math.random()){
@@ -230,6 +221,7 @@ $(function(){
 				}
 			}
 		}
+		console.log("LEVEL CREATED");
 		console.log(levelColors);
 		console.log(levelShapes);
 		fillBoxes(colors, colorCanBe, colorCanBeCountRow, colorCanBeCountColumn, levelColors, solutionColors);
@@ -336,6 +328,7 @@ $(function(){
 				solutionColors = rotateBoard(solutionColors.slice(0));
 			}
 			console.log(inserted + " " + patternNum + " " + valueA + " " + valueB + " " + randRow);
+			console.log(tempLevel);
 		}
 		return inserted;
 	}
@@ -441,14 +434,6 @@ $(function(){
 		}
 	}
 
-	function rotateBoard(whatBoard) {
-		board = [];
-		for (l = 0; l < whatBoard.length; l++) {
-			board[l] = whatBoard[whatSquare(4 - column(l), row(l))];
-		}
-		return board;
-	}
-
 	function reset() {
 		levelColors = [];
 		levelShapes = [];
@@ -456,6 +441,14 @@ $(function(){
 		solutionColors = [];
 		solutionShapes = [];
 		solution = [];
+	}
+
+	function rotateBoard(whatBoard) {
+		board = [];
+		for (l = 0; l < whatBoard.length; l++) {
+			board[l] = whatBoard[whatSquare(4 - column(l), row(l))];
+		}
+		return board;
 	}
 
 	function row(square) {
