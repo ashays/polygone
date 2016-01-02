@@ -19,7 +19,6 @@
     <ul id="blocks"></ul>
   </div>
   <div class="bottomBar" id="levelStats">
-    <div class="alert section" id="alerts"></div>
     <div class="info section" id="levelInfo">
       <div class="counter">
         <img src="img/trash.png">
@@ -31,7 +30,14 @@
         <span id="clock">12</span>
       </div>
     </div>
-    <div class="results section">
+    <div class="alert section" id="alerts">
+      <img src="img/wrong.png">
+      <h2>Something's Wrong!</h2>
+      <p>You ran out of erases, and there are still mistakes on the board. Tap an erased block to bring it back, or start this level over.</p>
+      <div class="button" id="reset">Reset Level</div>
+      <!-- <div class="button" id="close">Ok</div> -->
+    </div>
+    <div class="results section" id="results">
       <img src="img/thumbs-up.png">
       <h2>Success!</h2>
       <table>
@@ -40,7 +46,7 @@
         <tr><td><img src="img/check.png"></td><td>Puzzles Completed</td><td><span id="completedLevels">53</span></td></tr>
         <tr><td><img src="img/arrow-up.png" id="averageImg"></td><td>Average Time</td><td><span id="averageTime">47</span></td></tr>
       </table>
-      <div class="button">Goals</div>
+      <!-- <div class="button">Goals</div> -->
       <div class="button" id="next">Play Again</div>
     </div>
   </div>

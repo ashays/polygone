@@ -13,6 +13,7 @@ $(function(){
 	var eraser;
 	var time;
 	var timer;
+	var idleTime;
 	
 	var levelColors = [];
 	var levelShapes = [];
@@ -44,10 +45,10 @@ $(function(){
 		$("#levelStats").css("height", levelStatsMainHeight);
 		$("#newStars").empty();
 		do {
-			console.log("CREATING LEVEL");
+			// console.log("CREATING LEVEL");
 			newLevel();
 		} while (level.toString().indexOf("undefined") > -1);
-		console.log(level);
+		// console.log(level);
 		answer = $.extend( {}, level );
 		incorrect();
 		createStage(level);
@@ -61,6 +62,7 @@ $(function(){
 		$("#erases").text('0');
 		$("#maxErases").text(maxEliminate);
 		time = 0;
+		idleTime = 0;
 		$("#clock").text(time);
 		var timer = $(".timer"),
 		newTimer = timer.clone(true);
@@ -82,9 +84,18 @@ $(function(){
 
 	function addTime() {
 		time++;
+		idleTime++;
+		if (idleTime > 4) {
+			checkForMistakes(true);
+			idleTime = 0;
+		}
 		$("#clock").text(time);
 		incTimer();
 	}
+
+	$(this).mousemove(function (e) {
+		idleTime = 0;
+	});
 
 	function incTimer() {
 		timer = setTimeout(addTime, 1000);
@@ -106,33 +117,89 @@ $(function(){
 					eraser--;
 				}
 				else{ // erasing a square
-					if(canErase(target.getAttribute('data-number')) && eraser < maxEliminate){
+					if (canErase(target.getAttribute('data-number')) && eraser < maxEliminate){
 						erase(target);
 						clicks++;
 						eraser++;
+					} else if (! canErase(target.getAttribute('data-number'))) {
+						shake($("#puzzle"), 300);
 					}
 				}
-				if(maxEliminate!=eraser){
+
+				if (checkForMistakes(false)) {
 					incorrect();
-					toggleIncorrectAlert();
+					toggleIncorrectAlert();					
+				} else {
+					correct();
 				}
-				else if(maxEliminate==eraser){
-					for(i = 0; i<solution.length; i++){
-						if(solution[i]!=answer[i])
-							incorrect();
-					}
-					if(status=="incorrect"){
-						toggleIncorrectAlert();
-					}
-					else{
-						correct();
-					}
-				}
-				$("#erases").text(eraser);				
+				// if(maxEliminate!=eraser){
+				// 	incorrect();
+				// 	toggleIncorrectAlert();
+				// } else if(maxEliminate==eraser) {
+				// 	for(i = 0; i<solution.length; i++){
+				// 		if(solution[i]!=answer[i])
+				// 			incorrect();
+				// 	}
+				// 	if(status=="incorrect"){
+				// 		toggleIncorrectAlert();
+				// 	}
+				// 	else{
+				// 		correct();
+				// 	}
+				// }
+				$("#erases").text(eraser);
 			}
 		},
 		threshold:50
 	});
+
+	function checkForMistakes(shouldShake) {
+		for (var i = 0; i < 25; i++) {
+			for (var j = i + 1; row(i) == row(j); j++) {
+				if (sameCat(i, j)) {
+					// console.log(i + " " + j);
+					if (shouldShake) {
+						shake($($("#blocks li")[i]), 500);
+						shake($($("#blocks li")[j]), 500);
+					}
+					return true;
+				}
+			}
+			for (var j = i + 5; j < 25; j+=5) {
+				if (sameCat(i, j)) {
+					// console.log(i + " " + j);
+					if (shouldShake) {
+						shake($($("#blocks li")[i]), 500);
+						shake($($("#blocks li")[j]), 500);
+					}
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	function sameCat(block1, block2) {
+		if ($($('#blocks li')[block1]).hasClass("clicked") || $($('#blocks li')[block2]).hasClass("clicked")) {
+			return false;
+		} else if ($($('#blocks li')[block1]).hasClass("er") || $($('#blocks li')[block2]).hasClass("er")) {
+			return false;
+		} else if ($('#blocks li')[block1].className.substring(2) == $('#blocks li')[block2].className.substring(2)) {
+			// console.log($('#blocks li')[block1].className + " " + $('#blocks li')[block2].className);
+			return true;
+		} else if ($('#blocks li')[block1].className.substring(0,1) == $('#blocks li')[block2].className.substring(0,1)) {
+			// console.log($('#blocks li')[block1].className + " " + $('#blocks li')[block2].className);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function shake(ele, time) {
+		ele.addClass("shake");
+		setTimeout(function(){
+		  ele.removeClass("shake");}, time);
+	}
 	
 	function erase(block){
 		var blockNumber = Number(block.getAttribute('data-number')) + 1;
@@ -163,8 +230,9 @@ $(function(){
 	
 	function toggleIncorrectAlert(){
 		if(maxEliminate==eraser){
-			$("#alert").text("Oops! There are still mistakes on the board. Tap an erased block to bring it back and try again.");
-			$("#levelStats").css("height","130px");			
+			$("#results").hide();
+			$("#alerts").show();
+			$("#levelStats").css("height","245px");
 		}
 		else{
 			$("#levelStats").css("height",levelStatsMainHeight);
@@ -191,8 +259,9 @@ $(function(){
 		} else {
 			$("#averageImg").attr("src","img/arrow-down.png");
 		}
-		$("#levelInfo").css("display","none");
-		$("#results").css("display","block");
+		$("#levelInfo").hide();
+		$("#alerts").hide();		
+		$("#results").show();
 		$("#levelStats").css("height","260px");
 	}
 
@@ -203,11 +272,22 @@ $(function(){
 		threshold:50
 	});	
 
+	$("#reset").swipe( {
+		tap:function(event, target) {
+			createStage(level);
+			eraser = 0;
+			answer = $.extend( {}, level );
+			$("#erases").text(eraser);
+			$("#levelStats").css("height",levelStatsMainHeight);
+		},
+		threshold:50
+	});	
+
 	function newLevel() {
 		reset();
 		addEraseBlocks(10);
-		console.log(levelColors);
-		console.log(levelShapes);
+		// console.log(levelColors);
+		// console.log(levelShapes);
 		var numberOfPatterns = 0;
 		var rand = Math.random();
 		for (f = 0; f < 15 || numberOfPatterns < 4; f++, rand = Math.random()){
@@ -221,9 +301,9 @@ $(function(){
 				}
 			}
 		}
-		console.log("LEVEL CREATED");
-		console.log(levelColors);
-		console.log(levelShapes);
+		// console.log("LEVEL CREATED");
+		// console.log(levelColors);
+		// console.log(levelShapes);
 		fillBoxes(colors, colorCanBe, colorCanBeCountRow, colorCanBeCountColumn, levelColors, solutionColors);
 		fillBoxes(shapes, shapeCanBe, shapeCanBeCountRow, shapeCanBeCountColumn, levelShapes, solutionShapes);
 		createLevel();
@@ -327,8 +407,8 @@ $(function(){
 				levelColors = rotateBoard(levelColors.slice(0));
 				solutionColors = rotateBoard(solutionColors.slice(0));
 			}
-			console.log(inserted + " " + patternNum + " " + valueA + " " + valueB + " " + randRow);
-			console.log(tempLevel);
+			// console.log(inserted + " " + patternNum + " " + valueA + " " + valueB + " " + randRow);
+			// console.log(tempLevel);
 		}
 		return inserted;
 	}
