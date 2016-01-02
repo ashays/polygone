@@ -302,6 +302,75 @@ body {
     color: #CC3333;
 }
 
+/* Tutorial */
+
+#tutorial {
+    width: 100%;
+    height: 100%;
+    background: #333;
+    color: #FFF;
+    margin: 0;
+    padding: 10px 20px;
+    overflow: scroll;
+}
+
+#tutorial .wrapper {
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+#tutorial subtitle {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 20px;
+    display: block;
+    text-align: center;
+}
+
+#tutorial h2 {
+	text-transform: lowercase;
+	font-size: 40px;
+	margin: 5px 0;
+	letter-spacing: -1px;
+	text-align: center;
+}
+
+#tutorial p {
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+#tutorial #anim1 {
+	opacity: 0;
+	animation:fadeIn .5s forwards;
+	-webkit-animation:fadeIn .5s forwards; /* Safari and Chrome */	
+}
+
+#tutorial #anim2 {
+	opacity: 0;
+	animation:fadeIn .5s 1s forwards;
+	-webkit-animation:fadeIn .5s 1s forwards; /* Safari and Chrome */	
+}
+
+#tutorial a {
+    text-decoration: none;
+}
+
+#tutorial .button {
+    background: #CC3333;
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    display: block;
+    margin-top: 25px;
+    opacity: 0;
+    animation:fadeIn .5s 2s forwards;
+    -webkit-animation:fadeIn .5s 2s forwards; /* Safari and Chrome */	
+}
+
+/* Puzzle Shapes and Colors */
+
 .puzzle li.a{
 	background:#CC3333;
 }
