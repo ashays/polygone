@@ -122,32 +122,18 @@ $(function(){
 						erase(target);
 						clicks++;
 						eraser++;
+					} else if (eraser >= maxEliminate) {
+						shake($(".counter"), 300);
 					} else if (! canErase(target.getAttribute('data-number'))) {
 						shake($("#puzzle"), 300);
 					}
 				}
-
 				if (checkForMistakes(false)) {
 					incorrect();
 					toggleIncorrectAlert();					
 				} else {
 					correct();
 				}
-				// if(maxEliminate!=eraser){
-				// 	incorrect();
-				// 	toggleIncorrectAlert();
-				// } else if(maxEliminate==eraser) {
-				// 	for(i = 0; i<solution.length; i++){
-				// 		if(solution[i]!=answer[i])
-				// 			incorrect();
-				// 	}
-				// 	if(status=="incorrect"){
-				// 		toggleIncorrectAlert();
-				// 	}
-				// 	else{
-				// 		correct();
-				// 	}
-				// }
 				$("#erases").text(eraser);
 			}
 		},
@@ -233,7 +219,7 @@ $(function(){
 		if(maxEliminate==eraser){
 			$("#results").hide();
 			$("#alerts").show();
-			$("#levelStats").css("height","245px");
+			$("#levelStats").css("height","180px");
 		}
 		else{
 			$("#levelStats").css("height",levelStatsMainHeight);
@@ -275,7 +261,10 @@ $(function(){
 
 	$("#reset").swipe( {
 		tap:function(event, target) {
-			createStage(level);
+			for (var i = 0; i < 25; i++) {
+				$($('#blocks li')[i]).removeClass("clicked");
+			}
+			// createStage(level);
 			eraser = 0;
 			answer = $.extend( {}, level );
 			$("#erases").text(eraser);
