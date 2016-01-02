@@ -108,6 +108,7 @@ $(function(){
 
 	$("#blocks").swipe( {
 		tap:function(event, target) {
+			idleTime = 0; // Reset idle time (for mobile)
 			if(status!="correct"){//As long as the level isn't already solved...
 				var target = getEventTarget(event);
 				checking();
