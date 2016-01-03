@@ -123,9 +123,11 @@ $(function(){
 						clicks++;
 						eraser++;
 					} else if (eraser >= maxEliminate) {
+						navigator.vibrate(100);
 						shake($(".counter"), 300);
 					} else if (! canErase(target.getAttribute('data-number'))) {
 						shake($("#puzzle"), 300);
+						navigator.vibrate(100);
 					}
 				}
 				if (checkForMistakes(false)) {
@@ -220,6 +222,8 @@ $(function(){
 			$("#results").hide();
 			$("#alerts").show();
 			$("#levelStats").css("height","180px");
+			checkForMistakes(true);
+			navigator.vibrate(100);
 		}
 		else{
 			$("#levelStats").css("height",levelStatsMainHeight);
@@ -264,7 +268,6 @@ $(function(){
 			for (var i = 0; i < 25; i++) {
 				$($('#blocks li')[i]).removeClass("clicked");
 			}
-			// createStage(level);
 			eraser = 0;
 			answer = $.extend( {}, level );
 			$("#erases").text(eraser);
