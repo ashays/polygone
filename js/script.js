@@ -36,7 +36,7 @@ $(function(){
 	
 	function initializeLevel(){
 		$("#stars").empty();
-		$("#timer").css("display","block");
+		$(".timer").css("display","block");
 		$("#puzzle").css("display","block");
 		$("#credits").css("display","none");
 		$("#alerts").css("display","none");
@@ -64,11 +64,8 @@ $(function(){
 		time = 0;
 		idleTime = 0;
 		$("#clock").text(time);
-		var timer = $(".timer"),
-		newTimer = timer.clone(true);
-        timer.before(newTimer);
-        $("." + timer.attr("class") + ":last").remove();
-        $('.timer').css('animation-duration', localStorage.averageTime + "s");
+		$('#timer').append("<div class='timer'></div>");
+		$('.timer').css('animation-duration', localStorage.averageTime + "s");
         incTimer();
 	}
 
@@ -237,6 +234,7 @@ $(function(){
 	function correct(){
 		status = "correct";
 		clearTimeout(timer);
+		$('.timer').remove();
 		var averageTime = parseFloat(localStorage.averageTime);
 		var puzzlesCompleted = parseInt(localStorage.puzzlesCompleted);
 		localStorage.averageTime = (puzzlesCompleted * averageTime + time) / (puzzlesCompleted + 1);
