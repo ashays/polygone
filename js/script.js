@@ -120,20 +120,20 @@ $(function(){
 						clicks++;
 						eraser++;
 					} else if (eraser >= maxEliminate) {
-						navigator.vibrate(100);
 						shake($(".counter"), 300);
+						navigator.vibrate(100);
 					} else if (! canErase(target.getAttribute('data-number'))) {
 						shake($("#puzzle"), 300);
 						navigator.vibrate(100);
 					}
 				}
+				$("#erases").text(eraser);
 				if (checkForMistakes(false)) {
 					incorrect();
 					toggleIncorrectAlert();					
 				} else {
 					correct();
 				}
-				$("#erases").text(eraser);
 			}
 		},
 		threshold:50
