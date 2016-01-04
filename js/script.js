@@ -239,7 +239,11 @@ $(function(){
 		var puzzlesCompleted = parseInt(localStorage.puzzlesCompleted);
 		localStorage.averageTime = (puzzlesCompleted * averageTime + time) / (puzzlesCompleted + 1);
 		localStorage.puzzlesCompleted++;
-		$("#taps").text(clicks - maxEliminate);
+		$("#taps").text(Math.max(clicks - maxEliminate, 0));
+		// Debug...
+		if (clicks < maxEliminate) {
+			console.log("clicks < maxEliminate / clicks: " + clicks + "  maxEliminate: " + maxEliminate)			
+		}
 		$("#time").text(time);
 		$("#completedLevels").text(localStorage.puzzlesCompleted);
 		$("#averageTime").text(Math.floor(localStorage.averageTime));
