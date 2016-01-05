@@ -392,15 +392,15 @@ $(function(){
 		if (canBeInserted) {
 			inserted = true;
 			if (att == colors) {
-				levelColors = rotateBoard(tempLevel.slice(0));
-				solutionColors = rotateBoard(tempSol.slice(0));
-				levelShapes = rotateBoard(levelShapes.slice(0));
-				solutionShapes = rotateBoard(solutionShapes.slice(0));
+				levelColors = transformBoard(tempLevel.slice(0));
+				solutionColors = transformBoard(tempSol.slice(0));
+				levelShapes = transformBoard(levelShapes.slice(0));
+				solutionShapes = transformBoard(solutionShapes.slice(0));
 			} else if (att = shapes) {
-				levelShapes = rotateBoard(tempLevel.slice(0));
-				solutionShapes = rotateBoard(tempSol.slice(0));
-				levelColors = rotateBoard(levelColors.slice(0));
-				solutionColors = rotateBoard(solutionColors.slice(0));
+				levelShapes = transformBoard(tempLevel.slice(0));
+				solutionShapes = transformBoard(tempSol.slice(0));
+				levelColors = transformBoard(levelColors.slice(0));
+				solutionColors = transformBoard(solutionColors.slice(0));
 			}
 			// console.log(inserted + " " + patternNum + " " + valueA + " " + valueB + " " + randRow);
 			// console.log(tempLevel);
@@ -518,12 +518,24 @@ $(function(){
 		solution = [];
 	}
 
+	function transformBoard(whatBoard) {
+		return mirrorBoard(rotateBoard(whatBoard));
+	}
+
 	function rotateBoard(whatBoard) {
 		board = [];
 		for (l = 0; l < whatBoard.length; l++) {
 			board[l] = whatBoard[whatSquare(4 - column(l), row(l))];
 		}
 		return board;
+	}
+
+	function mirrorBoard(whatBoard) {
+		board = [];
+		for (l = 0; l < whatBoard.length; l++) {
+			board[l] = whatBoard[row(l) * 5 + 4 - column(l)];
+		}
+		return board;		
 	}
 
 	function row(square) {
