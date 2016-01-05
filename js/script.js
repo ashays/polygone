@@ -90,10 +90,6 @@ $(function(){
 		incTimer();
 	}
 
-	$(this).mousemove(function (e) {
-		idleTime = 0;
-	});
-
 	function incTimer() {
 		timer = setTimeout(addTime, 1000);
 	}
